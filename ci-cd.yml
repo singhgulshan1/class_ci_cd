@@ -1,4 +1,4 @@
-name: Background Remover CI/CD
+name: Python CI/CD Pipeline
 
 on:
   push:
@@ -7,33 +7,51 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Code checkout karo
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
-        cache: 'pip'
+      - name: Python 3.11 setup karo
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Dependencies install karo
+        run: |
+          pip install --upgrade pip
+          pip install pytest
+          pip install -r requirements.txt
 
-    - name: Lint with flake8
-      run: |
-        # Stop the build if there are critical Python syntax errors
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Treat all other issues as warnings
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Tests chalao
+        run: |
+          python -m pytest test_app.py -v
 
-    - name: Run Tests
-      run: |
-        pip install pytest
-        pytest
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Code checkout karo
+        uses: actions/checkout@v4
+
+      - name: GitHub Pages configure karo
+        uses: actions/configure-pages@v5
+
+      - name: Static files upload karo
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: GitHub Pages pe deploy karo
+        id: deployment
+        uses: actions/deploy-pages@v4
