@@ -9,10 +9,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Code checkout
+      - name: Code checkout karo
         uses: actions/checkout@v4
 
-      - name: Python setup
+      - name: Python setup karo
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -33,7 +33,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Code checkout
+      - name: Code checkout karo
         uses: actions/checkout@v4
 
       - name: Pages configure karo
