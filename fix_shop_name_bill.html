@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <!-- PDF generate karne ke liye library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        /* Inputs styling */
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        /* Header section */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #222;
+            padding-bottom: 20px;
+        }
+        .invoice-meta {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 100%;
+        }
+        .meta-row label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        /* Details section */
+        .details-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .details-box {
+            width: 45%;
+        }
+        .details-box h3 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .bold-input {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        
+        /* Totals styling */
+        .total-section {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .total-box {
+            width: 350px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-top: 2px solid #333;
+        }
+        
+        /* Footer / Advanced Section */
+        .footer-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        .notes-section {
+            width: 55%;
+        }
+        .amount-in-words {
+            margin-top: 20px;
+        }
+        .amount-in-words p {
+            margin: 5px 0 0 0;
+            font-style: italic;
+            color: #555;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+        .signature-section {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .signature-line {
+            border-top: 1px solid #333;
+            width: 100%;
+            text-align: center;
+            padding-top: 5px;
+            margin-top: 60px;
+            font-weight: bold;
+        }
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .btn:hover { background-color: #0056b3; }
+        .btn-danger { background-color: #dc3545; padding: 5px 10px; }
+        .btn-danger:hover { background-color: #c82333; }
+        
+        .actions {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+        }
+
+        /* PDF Printing Mode Styles */
+        .printing input, .printing textarea {
+            border: none !important;
+            background: transparent !important;
+            resize: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            color: inherit !important; /* Force text to be visible in PDF */
+            -webkit-text-fill-color: inherit !important;
+        }
+        .printing .hide-on-print {
+            display: none !important;
+        }
+        /* PDF mein khali placeholders hide karne ke liye */
+        .printing input::placeholder, .printing textarea::placeholder {
+            color: transparent !important;
+        }
+        .printing input::-webkit-input-placeholder, .printing textarea::-webkit-input-placeholder {
+            color: transparent !important;
+        }
+        .printing {
+            width: 800px !important;
+            max-width: none !important;
+            padding: 30px !important;
+            margin: 0 !important; /* Center margin hata diya taaki PDF cut na ho */
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="invoice-container">
+        <div class="header">
+            <h1 style="margin: 0; font-size: 3rem; color: #222;">Gulshan</h1>
+            <p style="margin: 5px 0; font-style: italic; font-size: 1.1rem; color: #555;">Royal Se Sasta or Royal Se Behtar kahi nahi</p>
+            <p style="margin: 5px 0; color: #333;">Mob: 9999222809 | Noida, UP 201301</p>
+        </div>
+
+        <div class="details-wrapper">
+            <div class="details-box" style="width: 50%;">
+                <strong style="font-size: 1.1rem;">Bill To:</strong><br>
+                <input type="text" id="buyerName" value="GULSHAN KUMAR (TECH DOCTOR)" class="bold-input" style="font-size: 1.1rem; margin-top: 10px;">
+                <input type="text" value="Mobile: 6206389913">
+            </div>
+            <div class="details-box" style="width: 40%; text-align: right;">
+                <div class="meta-row">
+                    <label>Invoice No:</label> 
+                    <input type="text" value="R/SL/24-25/9492" style="width: 150px; margin: 0;">
+                </div>
+                <div class="meta-row" style="margin-top: 10px;">
+                    <label>Date:</label> 
+                    <input type="text" value="08/03/2026" style="width: 150px; margin: 0;">
+                </div>
+            </div>
+        </div>
+
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th width="5%">No</th>
+                    <th>Items</th>
+                    <th width="12%">Qty</th>
+                    <th width="15%">Rate</th>
+                    <th width="20%" class="text-right">Total</th>
+                    <th width="5%" class="hide-on-print">Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows will be added here dynamically -->
+            </tbody>
+        </table>
+        
+        <button class="btn hide-on-print" onclick="addRow()" style="margin-bottom: 20px;">+ Add Product</button>
+
+        <div class="footer-section">
+            <div class="notes-section">
+                <strong>Terms & Conditions:</strong>
+                <textarea placeholder="1. Goods once sold will not be taken back." rows="2">1. Goods once sold will not be taken back.</textarea>
+                <div class="amount-in-words">
+                    <strong>Amount in Words:</strong>
+                    <p id="amountInWordsText">Zero Rupees Only</p>
+                </div>
+            </div>
+            
+            <div style="width: 40%; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end;">
+                <div class="total-box">
+                    <div class="total-row">
+                        <span>Grand Total:</span>
+                        <span id="grandTotal" style="color: #222;">0.00</span>
+                    </div>
+                </div>
+                
+                <div class="signature-section">
+                    <div class="signature-line">Signature: Royal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="btn" style="font-size: 1.2rem; padding: 15px 30px;" onclick="generatePDF()">📄 Make PDF</button>
+    </div>
+
+    <script>
+        // Page load hote hi ek row add kar do
+        window.onload = function() { addRow(); };
+
+        // Row add karne ka function
+        function addRow() {
+            const tbody = document.getElementById('tableBody');
+            const rowCount = tbody.children.length + 1;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="row-num text-center">${rowCount}</td>
+                <td><input type="text" placeholder="Enter item name"></td>
+                <td><input type="text" value="1 PCS" oninput="calculateTotal(this)"></td>
+                <td><input type="number" min="0" value="0" step="1" oninput="calculateTotal(this)"></td>
+                <td class="text-right row-total">0.00</td>
+                <td class="text-center hide-on-print">
+                    <button class="btn-danger" onclick="removeRow(this)">X</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            updateRowNumbers();
+        }
+
+        // Row remove karne ka function
+        function removeRow(btn) {
+            btn.closest('tr').remove();
+            updateRowNumbers();
+            updateGrandTotal();
+        }
+
+        // Serial number update karne ke liye
+        function updateRowNumbers() {
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach((row, index) => {
+                row.querySelector('.row-num').innerText = index + 1;
+            });
+        }
+
+        // Price calculation function
+        function calculateTotal(inputElement) {
+            const row = inputElement.closest('tr');
+            const qtyInput = row.cells[2].querySelector('input');
+            const priceInput = row.cells[3].querySelector('input');
+            
+            const qtyText = qtyInput ? qtyInput.value : '0';
+            const qty = parseFloat(qtyText.replace(/[^\d.-]/g, '')) || 0; 
+            const price = priceInput ? parseFloat(priceInput.value) : 0;
+            const total = qty * price;
+            
+            row.querySelector('.row-total').innerText = total.toFixed(2);
+            updateGrandTotal();
+        }
+
+        // Grand Total update karna
+        function updateGrandTotal() {
+            let grandTotal = 0;
+            const totals = document.querySelectorAll('.row-total');
+            totals.forEach(td => {
+                const val = parseFloat(td.innerText.replace(/[^\d.-]/g, '')) || 0;
+                grandTotal += val;
+            });
+            document.getElementById('grandTotal').innerText = grandTotal.toFixed(2);
+
+            // Amount in words ko update karein
+            const amountInWordsElem = document.getElementById('amountInWordsText');
+            const grandTotalInteger = Math.floor(grandTotal);
+            amountInWordsElem.innerText = numberToWords(grandTotalInteger) + ' Rupees Only';
+        }
+
+        // Number ko words mein convert karne ka function (Indian Numbering System)
+        function numberToWords(num) {
+            if (num === 0) return 'Zero';
+
+            const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+            const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+            const numToWordsHelper = (n) => {
+                let str = '';
+                if (n >= 100) {
+                    str += ones[Math.floor(n / 100)] + ' Hundred ';
+                    n %= 100;
+                }
+                if (n >= 20) {
+                    str += tens[Math.floor(n / 10)] + ' ';
+                    n %= 10;
+                }
+                if (n > 0) {
+                    str += ones[n];
+                }
+                return str.trim();
+            };
+
+            let output = '';
+            let tempNum = num;
+
+            if (tempNum >= 10000000) {
+                output += numToWordsHelper(Math.floor(tempNum / 10000000)) + ' Crore ';
+                tempNum %= 10000000;
+            }
+            if (tempNum >= 100000) {
+                output += numToWordsHelper(Math.floor(tempNum / 100000)) + ' Lakh ';
+                tempNum %= 100000;
+            }
+            if (tempNum >= 1000) {
+                output += numToWordsHelper(Math.floor(tempNum / 1000)) + ' Thousand ';
+                tempNum %= 1000;
+            }
+            if (tempNum > 0) {
+                output += numToWordsHelper(tempNum);
+            }
+
+            return output.replace(/\s\s+/g, ' ').trim().toLowerCase();
+        }
+
+        // PDF Generate karne ka main function
+        function generatePDF() {
+            const element = document.getElementById('invoice-container');
+            
+            // Fix: Sync live input & textarea values to their HTML attributes
+            // Isse html2canvas ko pata chalega ki box mein user ne actually kya type kiya hai
+            element.querySelectorAll('input, textarea').forEach(el => {
+                if (el.tagName.toLowerCase() === 'textarea') {
+                    el.innerText = el.value;
+                } else {
+                    el.setAttribute('value', el.value);
+                    el.defaultValue = el.value; /* Fix for missing input text in PDF */
+                }
+            });
+
+            // .printing class add karke inputs ke borders aur buttons hide karein
+            element.classList.add('printing');
+            
+            // Buyer ka naam get karo filename ke liye
+            const buyerName = document.getElementById('buyerName').value.trim();
+            const pdfFilename = buyerName ? `${buyerName}.pdf` : 'Invoice_Bill.pdf';
+
+            const opt = {
+                margin:       0.3,
+                filename:     pdfFilename,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    windowWidth: 800
+                },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            window.scrollTo(0, 0);
+            // PDF banne ke baad wapas normal view laane ke liye promise ka use
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.classList.remove('printing');
+            });
+        }
+    </script>
+
+</body>
+</html>
