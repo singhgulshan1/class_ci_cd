@@ -1,0 +1,57 @@
+name: Python CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  # ── JOB 1: Test ──────────────────────────────
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout karo
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 setup karo
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Dependencies install karo
+        run: |
+          pip install -r requirements.txt
+
+      - name: Tests chalao
+        run: |
+          python -m pytest test_app.py -v
+
+  # ── JOB 2: Deploy (sirf test pass hone ke baad) ──
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Code checkout karo
+        uses: actions/checkout@v4
+
+      - name: GitHub Pages configure karo
+        uses: actions/configure-pages@v5
+
+      - name: Static files upload karo
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: GitHub Pages pe deploy karo
+        id: deployment
+        uses: actions/deploy-pages@v4
