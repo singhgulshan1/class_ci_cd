@@ -11,8 +11,8 @@
         <div class="container">
             <a href="index.html" class="logo">IT & Security Solutions</a>
             <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Home</a></li>
+                <ul id="main-nav-list">
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="products.html">Products</a></li>
@@ -68,9 +68,9 @@
             <div class="container">
                 <h2>Why Choose Us?</h2>
                 <div class="card-grid">
-                    <div class="card"><h3>Fast Service</h3><p>Prompt response and efficient resolution to minimize downtime.</p></div>
-                    <div class="card"><h3>Expert Support</h3><p>Certified professionals with extensive experience in IT and security.</p></div>
-                    <div class="card"><h3>Affordable Solutions</h3><p>High-quality services tailored to your budget without compromise.</p></div>
+                    <div class="card"><h3 class="icon-fast">Fast Service</h3><p>Prompt response and efficient resolution to minimize downtime.</p></div>
+                    <div class="card"><h3 class="icon-expert">Expert Support</h3><p>Certified professionals with extensive experience in IT and security.</p></div>
+                    <div class="card"><h3 class="icon-affordable">Affordable Solutions</h3><p>High-quality services tailored to your budget without compromise.</p></div>
                 </div>
             </div>
         </section>
@@ -94,17 +94,7 @@
     <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
         <span class="whatsapp-icon">💬</span> WhatsApp
     </a>
-
-    <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('.navbar nav');
-
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                nav.classList.toggle('active');
-                menuToggle.classList.toggle('active');
-            });
-        }
-    </script>
+    
+    <script src="js/script.js"></script>
 </body>
 </html>
