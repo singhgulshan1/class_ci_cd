@@ -1,150 +1,33 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Background Remover</title>
+    <title>My Project</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #e2e8f0; padding: 20px; color: #2d3748; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        h1 { color: #2b6cb0; margin-top: 0; }
-        .upload-area { margin: 20px 0; border: 3px dashed #cbd5e0; padding: 40px; border-radius: 10px; background: #f7fafc; transition: 0.3s; }
-        .upload-area:hover { border-color: #3182ce; background: #ebf8ff; }
-        .btn { border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; margin: 10px; font-weight: bold; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .btn-upload { background: #3182ce; color: white; }
-        .btn-upload:hover { background: #2b6cb0; }
-        .btn-remove { background: #38a169; color: white; }
-        .btn-remove:hover { background: #2f855a; }
-        .btn-download { background: #ed8936; color: white; display: none; }
-        .btn-download:hover { background: #dd6b20; }
-        .btn:disabled { background: #a0aec0; cursor: not-allowed; box-shadow: none; }
-        
-        .image-preview { display: flex; justify-content: center; margin-top: 30px; flex-wrap: wrap; gap: 30px; }
-        .img-box { flex: 1; min-width: 300px; max-width: 400px; }
-        .img-box h3 { color: #4a5568; }
-        /* Checkerboard background jisse transparent background saaf dikhe */
-        .img-box img { 
-            max-width: 100%; 
-            border-radius: 8px; 
-            border: 2px solid #e2e8f0; 
-            background-color: #fff;
-            background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(135deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(135deg, transparent 75%, #ccc 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+            background: #f5f5f5;
         }
-        #loader { display: none; margin: 20px auto; font-weight: bold; color: #e53e3e; font-size: 1.1rem; }
-        .spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(229,62,62,0.3); border-radius: 50%; border-top-color: #e53e3e; animation: spin 1s ease-in-out infinite; vertical-align: middle; margin-right: 10px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        h1 { color: #333; }
+        p  { color: #666; }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>✂️ AI Background Remover</h1>
-    <p>Apni photo upload karein aur sirf ek click mein uska background gayab karein!</p>
-
-    <div class="upload-area">
-        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <button class="btn btn-upload" onclick="document.getElementById('imageInput').click()">📁 Select Photo</button>
-        <p id="fileName" style="color: #718096; margin-top: 15px;">No file chosen</p>
-    </div>
-
-    <button class="btn btn-remove" id="removeBtn" disabled>✨ Remove Background</button>
-    <button class="btn btn-download" id="downloadBtn">⬇️ Download Photo</button>
-
-    <div id="loader"><div class="spinner"></div>Processing... Please wait (Pehli baar thoda samay lag sakta hai)</div>
-
-    <div class="image-preview">
-        <div class="img-box" id="originalBox" style="display: none;">
-            <h3>Original Photo</h3>
-            <img id="originalImg" src="" alt="Original">
-        </div>
-        <div class="img-box" id="resultBox" style="display: none;">
-            <h3>Result (Transparent)</h3>
-            <img id="resultImg" src="" alt="Result">
-        </div>
-    </div>
-</div>
-
-<script>
-    const imageInput = document.getElementById('imageInput');
-    const originalImg = document.getElementById('originalImg');
-    const resultImg = document.getElementById('resultImg');
-    const removeBtn = document.getElementById('removeBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const loader = document.getElementById('loader');
-    const fileName = document.getElementById('fileName');
-
-    let selectedFile = null;
-    let resultBlobUrl = null;
-
-    // Jab user photo select kare
-    imageInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            selectedFile = e.target.files[0];
-            fileName.innerText = "Selected: " + selectedFile.name;
-            
-            // Original image screen par dikhayein
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                originalImg.src = e.target.result;
-                document.getElementById('originalBox').style.display = 'block';
-                document.getElementById('resultBox').style.display = 'none';
-                downloadBtn.style.display = 'none';
-                removeBtn.disabled = false; // Button on kar dein
-            }
-            reader.readAsDataURL(selectedFile);
-        }
-    });
-
-    // Jab Remove Background button dabaya jaye
-    removeBtn.addEventListener('click', async function() {
-        if (!selectedFile) return;
-
-        // UI change: Loading on, Button off
-        removeBtn.disabled = true;
-        loader.style.display = 'block';
-        document.getElementById('resultBox').style.display = 'none';
-        downloadBtn.style.display = 'none';
-
-        const formData = new FormData();
-        formData.append('image', selectedFile);
-
-        // Agar aap ise mobile (Live Server) par chala rahe hain, to IP address auto-detect karega
-        let apiUrl = 'http://127.0.0.1:5001/remove-bg';
-        if (window.location.hostname !== '127.0.0.1' && window.location.hostname !== 'localhost' && window.location.hostname !== '') {
-            apiUrl = `http://${window.location.hostname}:5001/remove-bg`;
-        }
-
-        try {
-            // Python server ko photo bhej rahe hain
-            const response = await fetch(apiUrl, { method: 'POST', body: formData });
-            if (!response.ok) throw new Error('Server se sahi response nahi aaya!');
-
-            const blob = await response.blob();
-            if (resultBlobUrl) URL.revokeObjectURL(resultBlobUrl); // Purana URL clean karna
-            resultBlobUrl = URL.createObjectURL(blob);
-            
-            resultImg.src = resultBlobUrl;
-            document.getElementById('resultBox').style.display = 'block';
-            downloadBtn.style.display = 'inline-block';
-        } catch (error) { 
-            console.error("Fetch Error:", error);
-            alert("Fetch Failed! Kripya check karein:\n1. Kya terminal me 'python app.py' chal raha hai?\n2. Agar pehli baar photo daali hai, to piche terminal me 170MB ka AI model download ho raha hoga, uske pure hone ka wait karein."); 
-        } 
-        finally { loader.style.display = 'none'; removeBtn.disabled = false; }
-    });
-
-    // Jab Download button dabaya jaye
-    downloadBtn.addEventListener('click', function() {
-        if (!resultBlobUrl) return;
-        const a = document.createElement('a');
-        a.href = resultBlobUrl;
-        a.download = 'No_BG_' + selectedFile.name.replace(/\.[^/.]+$/, "") + '.png'; // PNG format me save (taki transparent rahe)
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
-</script>
+    <h1>Welcome to My Website!</h1>
+    <p>Yeh meri pehli static site hai</p>
+    <button class="btn">Click Me!</button>
 </body>
 </html>
