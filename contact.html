@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - IT & Security Solutions</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">IT & Security Solutions</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Get in Touch</h1>
+                <p>We're here to help with all your IT and security needs.</p>
+            </div>
+        </section>
+
+        <section class="section section-bg-light">
+            <div class="container">
+                <h2>Contact Us Directly</h2>
+                <p>Feel free to reach out to us through any of the following channels:</p>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Phone</h3>
+                        <p>+1 (234) 567-890</p>
+                        <a href="tel:+1234567890" class="btn">Call Now</a>
+                    </div>
+                    <div class="card">
+                        <h3>Email</h3>
+                        <p>info@itsecuritysolutions.com</p>
+                        <a href="mailto:info@itsecuritysolutions.com" class="btn">Send Email</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-bg-medium">
+            <div class="container">
+                <h2>Send Us a Message</h2>
+                <div class="contact-form-container">
+                    <form action="#" method="POST">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" name="phone" required>
+
+                        <label for="service">Interested Service:</label>
+                        <select id="service" name="service">
+                            <option value="">-- Select a Service --</option>
+                            <option value="cctv">CCTV Installation</option>
+                            <option value="biometric">Biometric Systems</option>
+                            <option value="access_control">Access Control</option>
+                            <option value="repair">Laptop/Desktop Repair</option>
+                            <option value="laptops">Refurbished Laptop Sales</option>
+                            <option value="other">Other IT/Security Services</option>
+                        </select>
+
+                        <label for="message">Your Message:</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+
+                        <input type="submit" value="Send Message">
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 IT & Security Solutions. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <span class="whatsapp-icon">💬</span> WhatsApp
+    </a>
+    <script src="js/script.js"></script>
+</body>
+</html>

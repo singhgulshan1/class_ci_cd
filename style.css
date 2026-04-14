@@ -1,0 +1,424 @@
+/* Global Styles & Variables */
+:root {
+    --primary-dark: #0A192F;
+    --secondary-dark: #1F4068;
+    --tertiary-dark: #16213E;
+    --accent-color: #00BCD4; /* Cyan */
+    --text-light: #FFFFFF;
+    --text-dark: #333333;
+    --bg-light: #F5F5F5;
+    --bg-medium: #E0E0E0;
+    --gradient-start: #1F4068;
+    --gradient-end: #16213E;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-dark);
+    margin-bottom: 15px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--primary-dark);
+    color: var(--text-light);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    color: var(--text-light);
+    font-size: 1.8em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar nav ul li {
+    margin-left: 25px;
+}
+
+.navbar nav ul li a {
+    color: var(--text-light);
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar nav ul li a:hover,
+.navbar nav ul li a.active {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    text-decoration: none;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    height: 3px;
+    width: 25px;
+    background: var(--text-light);
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text-light);
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    color: var(--text-light);
+}
+
+.hero p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn {
+    display: inline-block;
+    background: var(--accent-color);
+    color: var(--text-light);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #00a0b8; /* Slightly darker accent */
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Sections */
+.section {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+}
+
+.section-bg-light {
+    background-color: var(--bg-light);
+}
+
+.section-bg-medium {
+    background-color: var(--bg-medium);
+}
+
+.section-bg-dark {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text-light);
+}
+
+.section-bg-dark h2, .section-bg-dark p {
+    color: var(--text-light);
+}
+
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.card {
+    background: var(--text-light);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    color: var(--secondary-dark);
+    margin-bottom: 15px;
+}
+
+.card p {
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* About Page Specific */
+.about-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.about-content h3 {
+    margin-top: 30px;
+    color: var(--secondary-dark);
+}
+
+/* Contact Form */
+.contact-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--text-light);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.contact-form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+.contact-form-container input[type="text"],
+.contact-form-container input[type="email"],
+.contact-form-container input[type="tel"],
+.contact-form-container select,
+.contact-form-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--bg-medium);
+    border-radius: 5px;
+    font-size: 1em;
+    color: var(--text-dark);
+}
+
+.contact-form-container textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-form-container input[type="submit"] {
+    width: auto;
+    padding: 12px 30px;
+    background: var(--accent-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-form-container input[type="submit"]:hover {
+    background-color: #00a0b8;
+    transform: translateY(-2px);
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-dark);
+    color: var(--text-light);
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+
+.footer p {
+    margin: 0;
+}
+
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25D366; /* WhatsApp Green */
+    color: var(--text-light);
+    border-radius: 50px;
+    text-align: center;
+    font-size: 1.1em;
+    padding: 12px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    background-color: #1DA851;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+.whatsapp-float .whatsapp-icon {
+    font-size: 1.5em;
+    line-height: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-wrap: wrap;
+    }
+
+    .navbar .logo {
+        flex-grow: 1;
+        text-align: left;
+    }
+
+    .navbar nav {
+        order: 3; /* Push nav below logo and toggle */
+        width: 100%;
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        text-align: center;
+        background: var(--primary-dark);
+        padding-top: 10px;
+    }
+
+    .navbar nav.active {
+        display: flex; /* Show when active */
+    }
+
+    .navbar nav ul {
+        flex-direction: column;
+    }
+
+    .navbar nav ul li {
+        margin: 10px 0;
+    }
+
+    .menu-toggle {
+        display: flex;
+        margin-left: auto; /* Push to the right */
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.active span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .hero h1 {
+        font-size: 2.5em;
+    }
+
+    .hero p {
+        font-size: 1.1em;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .section h2 {
+        font-size: 2em;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 350px; /* Limit card width on small screens */
+    }
+
+    .contact-form-container {
+        padding: 25px;
+    }
+
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+
+    .whatsapp-float .whatsapp-icon {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+
+    .section h2 {
+        font-size: 1.8em;
+    }
+}

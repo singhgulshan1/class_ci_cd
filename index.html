@@ -1,99 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CCTV Security</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: #0a192f;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #1f4068, #16213e);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-        }
-
-        /* Section */
-        .section {
-            padding: 50px;
-            text-align: center;
-        }
-
-        .services {
-            background: #f5f5f5;
-        }
-
-        .products {
-            background: #e3f2fd;
-        }
-
-        .contact {
-            background: #0a192f;
-            color: white;
-        }
-
-        .box {
-            display: inline-block;
-            padding: 20px;
-            margin: 10px;
-            background: white;
-            border-radius: 10px;
-            width: 200px;
-        }
-
-        .btn {
-            background: #00bcd4;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - IT & Security Solutions</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">IT & Security Solutions</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
 
-<div class="navbar">
-    <h2>CCTV Security Solutions</h2>
-</div>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Complete IT & Security Solutions</h1>
+                <p>Your Trusted Partner for Digital Safety and Operational Efficiency.</p>
+                <a href="contact.html" class="btn">Get a Free Consultation</a>
+            </div>
+        </section>
 
-<div class="hero">
-    <h1>Best CCTV Security Services</h1>
-    <p>Protect your home, office and business</p>
-</div>
+        <!-- Services Overview Section -->
+        <section class="section section-bg-light">
+            <div class="container">
+                <h2>Our Core Services</h2>
+                <p>We offer a comprehensive suite of services to protect and empower your business.</p>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>CCTV Installation & Remote Access</h3>
+                        <p>Advanced surveillance systems with seamless remote monitoring capabilities.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Biometric Attendance Systems</h3>
+                        <p>Reliable and efficient solutions for accurate employee time tracking.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Laptop/Desktop Repair</h3>
+                        <p>Expert diagnostics and repair services for all your computing devices.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Access Control Systems</h3>
+                        <p>Secure your premises with modern door lock and entry management solutions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="section services">
-    <h2>Our Services</h2>
-    <div class="box">Installation</div>
-    <div class="box">Maintenance</div>
-    <div class="box">Repair</div>
-</div>
+        <!-- Why Choose Us Section -->
+        <section class="section section-bg-medium">
+            <div class="container">
+                <h2>Why Choose Us?</h2>
+                <div class="card-grid">
+                    <div class="card"><h3>Fast Service</h3><p>Prompt response and efficient resolution to minimize downtime.</p></div>
+                    <div class="card"><h3>Expert Support</h3><p>Certified professionals with extensive experience in IT and security.</p></div>
+                    <div class="card"><h3>Affordable Solutions</h3><p>High-quality services tailored to your budget without compromise.</p></div>
+                </div>
+            </div>
+        </section>
 
-<div class="section products">
-    <h2>Our Products</h2>
-    <div class="box">Dome Camera</div>
-    <div class="box">Bullet Camera</div>
-    <div class="box">IP Camera</div>
-</div>
+        <!-- Quick Contact Section -->
+        <section class="section section-bg-dark">
+            <div class="container">
+                <h2>Need Immediate Assistance?</h2>
+                <p>Call us now to discuss your IT and security needs.</p>
+                <a href="tel:+1234567890" class="btn">Call Us: +1 (234) 567-890</a>
+            </div>
+        </section>
+    </main>
 
-<div class="section contact">
-    <h2>Contact Us</h2>
-    <p>Phone: 6206389913</p>
-    <p>Email: gtechg615@gmail.com</p>
-    <button class="btn">Call Now</button>
-</div>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 IT & Security Solutions. All rights reserved.</p>
+        </div>
+    </footer>
 
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <span class="whatsapp-icon">💬</span> WhatsApp
+    </a>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.navbar nav');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+        }
+    </script>
 </body>
 </html>
