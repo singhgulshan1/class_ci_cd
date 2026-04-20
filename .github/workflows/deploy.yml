@@ -1,49 +1,21 @@
-name: Python CI/CD Pipeline
+name: Deploy to VPS
 
 on:
   push:
-    branches: [ "prod" ]
+    branches:
+      - prod
 
 jobs:
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Code checkout karo
-        uses: actions/checkout@v4
-
-      - name: Python setup karo
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Pytest install karo
-        run: pip install -r requirements.txt
-
-      - name: Tests chalao
-        run: python -m pytest test_app.py -v
-
   deploy:
-    needs: test
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Code checkout karo
-        uses: actions/checkout@v4
-
-      - name: Pages configure karo
-        uses: actions/configure-pages@v5
-
-      - name: Files upload karo
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          path: '.'
-
-      - name: Deploy karo
-        id: deployment
-        uses: actions/deploy-pages@v4
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /opt/www
+            git pull origin prod
