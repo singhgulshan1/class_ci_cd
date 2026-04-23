@@ -53,6 +53,18 @@ p {
     margin-bottom: 10px;
 }
 
+/* Accessibility helper */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
 /* Navbar */
 .navbar {
     background: var(--primary-dark);
@@ -104,6 +116,9 @@ p {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
 .menu-toggle span {
@@ -183,8 +198,8 @@ p {
 }
 
 .card-grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     justify-content: center;
     gap: 30px;
     margin-top: 30px;
@@ -195,7 +210,6 @@ p {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    width: 300px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -203,6 +217,13 @@ p {
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    font-size: 2.5em;
+    line-height: 1;
+    color: var(--accent-color);
+    margin-bottom: 15px;
 }
 
 .card h3 {
@@ -213,28 +234,6 @@ p {
 .card p {
     color: #666;
     font-size: 0.95em;
-}
-
-/* Icons for Why Choose Us section */
-.card h3[class^="icon-"]::before {
-    display: block;
-    font-size: 2em; /* Larger icon size */
-    margin-bottom: 10px;
-    color: var(--accent-color);
-    line-height: 1; /* Prevent extra space above/below icon */
-    font-weight: normal; /* Ensure unicode characters don't get bolded */
-}
-
-.card h3.icon-fast::before {
-    content: '⚡'; /* Unicode lightning bolt */
-}
-
-.card h3.icon-expert::before {
-    content: '⭐'; /* Unicode star */
-}
-
-.card h3.icon-affordable::before {
-    content: '💲'; /* Unicode heavy dollar sign */
 }
 
 
@@ -410,11 +409,6 @@ p {
 
     .section h2 {
         font-size: 2em;
-    }
-
-    .card {
-        width: 100%;
-        max-width: 350px; /* Limit card width on small screens */
     }
 
     .contact-form-container {
